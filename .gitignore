@@ -78,3 +78,4 @@ __recovery/
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
 *.stat
 Samples/TMSFNCCloudStorageServices/VCL/Bin/TTMSFNCCloudStorageServices.ini
+Samples/TMSFNCCloudStorageServices/VCL/Bin/OLDTTMSFNCCloudStorageServices.ini

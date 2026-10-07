@@ -79,7 +79,7 @@ type
     procedure btUploadClick(Sender: TObject);
     procedure btDeleteClick(Sender: TObject);
   private
-    procedure LoadKeysFromFile;
+
   public
     FCurrentFolder: TTMSFNCCloudItem;
     procedure Refresh;
@@ -110,50 +110,28 @@ begin
   cbStorageService.ItemIndex := Ord(cssGoogleDrive);
 end;
 
-procedure TCloudStorageServicesMain.btConnectClick(Sender: TObject);
-begin
-  var LClientID := string(edClientID.Text);
-  var LSecret := string(edSecret.Text);
-  var LCallBackURL := string(edCallbackURL.Text);
-
-  if LClientID.IsEmpty or LSecret.IsEmpty or LCallBackURL.IsEmpty then
-    raise Exception.Create('Please fill in ClientID, Secret and CallbackURL');
-
-  if (TMSFNCCloudStorageServices1.Authentication.ClientID <> LClientID) or
-    (TMSFNCCloudStorageServices1.Authentication.Secret <> LSecret) or
-    (TMSFNCCloudStorageServices1.Authentication.CallBackURL <> LCallBackURL)
-  then
-    TMSFNCCloudStorageServices1.Authentication.ClearTokens;
-
-  TMSFNCCloudStorageServices1.Authentication.ClientID := LClientID;
-  TMSFNCCloudStorageServices1.Authentication.Secret := LSecret;
-  TMSFNCCloudStorageServices1.Authentication.CallBackURL := LCallBackURL;
-  TMSFNCCloudStorageServices1.Storage.Authentication.Assign(TMSFNCCloudStorageServices1.Authentication);
-  TMSFNCCloudStorageServices1.SaveTokens;
-  TMSFNCCloudStorageServices1.Connect;
-end;
-
 procedure TCloudStorageServicesMain.SelectService;
 begin
   if cbStorageService.ItemIndex < 0 then
     Exit;
 
   TMSFNCCloudStorageServices1.Service := TTMSFNCCloudStorageServicesType(cbStorageService.ItemIndex);
-  Self.LoadKeysFromFile;
 end;
 
-procedure TCloudStorageServicesMain.LoadKeysFromFile;
+procedure TCloudStorageServicesMain.cbStorageServiceChange(Sender: TObject);
 begin
-  var LPersistTokens := TTMSFNCUtils.AddBackslash(TTMSFNCUtils.GetAppPath) + TMSFNCCloudStorageServices1.ClassName + '.ini';
-  TMSFNCCloudStorageServices1.PersistTokens.Key := LPersistTokens;
+  Self.SelectService;
+end;
 
-  TMSFNCCloudStorageServices1.Storage.PersistTokens.Assign(TMSFNCCloudStorageServices1.PersistTokens);
-  TMSFNCCloudStorageServices1.LoadTokens;
-  TMSFNCCloudStorageServices1.Authentication.Assign(TMSFNCCloudStorageServices1.Storage.Authentication);
+procedure TCloudStorageServicesMain.btConnectClick(Sender: TObject);
+begin
+  if Trim(edClientID.Text).IsEmpty or Trim(edSecret.Text).IsEmpty or Trim(edCallbackURL.Text).IsEmpty then
+    raise Exception.Create('Please fill in ClientID, Secret and CallbackURL');
 
-  edClientID.Text := TMSFNCCloudStorageServices1.Authentication.ClientID;
-  edSecret.Text := TMSFNCCloudStorageServices1.Authentication.Secret;
-  edCallbackURL.Text := TMSFNCCloudStorageServices1.Authentication.CallBackURL;
+  TMSFNCCloudStorageServices1.Authentication.ClientID := edClientID.Text;
+  TMSFNCCloudStorageServices1.Authentication.Secret := edSecret.Text;
+  TMSFNCCloudStorageServices1.Authentication.CallBackURL := edCallbackURL.Text;
+  TMSFNCCloudStorageServices1.Connect;
 end;
 
 procedure TCloudStorageServicesMain.btCreateFolderClick(Sender: TObject);
@@ -270,20 +248,15 @@ begin
     end);
 end;
 
-procedure TCloudStorageServicesMain.cbStorageServiceChange(Sender: TObject);
+procedure TCloudStorageServicesMain.TMSFNCCloudStorageServices1Connected(Sender: TObject);
 begin
-  Self.SelectService;
+  Self.Refresh;
 end;
 
 procedure TCloudStorageServicesMain.Refresh;
 begin
   FCurrentFolder := nil;
   TMSFNCCloudStorageServices1.GetFolderList;
-end;
-
-procedure TCloudStorageServicesMain.TMSFNCCloudStorageServices1Connected(Sender: TObject);
-begin
-  Self.Refresh;
 end;
 
 procedure TCloudStorageServicesMain.TMSFNCCloudStorageServices1CreateFolder(Sender: TObject; const AFolder: TTMSFNCCloudItem;
@@ -302,11 +275,15 @@ procedure TCloudStorageServicesMain.TMSFNCCloudStorageServices1GetFolderList(Sen
   const ARequestResult: TTMSFNCCloudBaseRequestResult);
 begin
   TMSFNCCloudDemoListBox1.BeginUpdate;
-  TMSFNCCloudDemoListBox1.ItemIndex := -1;
-  TMSFNCCloudDemoListBox1.Items.Clear;
-  Self.FillListBox(AItems, True, False);
-  Self.FillListBox(AItems, False, True);
-  TMSFNCCloudDemoListBox1.EndUpdate;
+  try
+    TMSFNCCloudDemoListBox1.ItemIndex := -1;
+    TMSFNCCloudDemoListBox1.Items.Clear;
+
+    Self.FillListBox(AItems, True, False);
+    Self.FillListBox(AItems, False, True);
+  finally
+    TMSFNCCloudDemoListBox1.EndUpdate;
+  end;
 end;
 
 procedure TCloudStorageServicesMain.FillListBox(AItems: TTMSFNCCloudItems; AAddFolders, AAddFiles: Boolean);
@@ -318,7 +295,7 @@ begin
     Exit;
 
   TMSFNCCloudDemoListBox1.BeginUpdate;
-  for var I := 0 to AItems.Count - 1 do
+  for var I := 0 to Pred(AItems.Count) do
   begin
     LCloudItem := AItems.Items[I];
     LType := LowerCase(StringReplace(ExtractFileExt(LCloudItem.FileName), '.', '', [rfReplaceAll]));

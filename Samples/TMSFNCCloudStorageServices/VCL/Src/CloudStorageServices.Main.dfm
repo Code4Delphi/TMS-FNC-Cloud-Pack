@@ -165,6 +165,7 @@ object CloudStorageServicesMain: TCloudStorageServicesMain
       Width = 361
       Height = 21
       TabOrder = 0
+      Text = 'http://127.0.0.1:8000'
     end
     object edSecret: TEdit
       Left = 80
@@ -207,10 +208,6 @@ object CloudStorageServicesMain: TCloudStorageServicesMain
       Height = 26
       Visible = True
       PersistTokens.Section = 'TTMSFNCCloudGoogleDrive'
-      PersistTokens.SaveClientID = True
-      PersistTokens.SaveSecret = True
-      PersistTokens.SaveKey = True
-      PersistTokens.SaveCallBack = True
       Service = cssBox
       OnConnected = TMSFNCCloudStorageServices1Connected
       OnGetFolderList = TMSFNCCloudStorageServices1GetFolderList

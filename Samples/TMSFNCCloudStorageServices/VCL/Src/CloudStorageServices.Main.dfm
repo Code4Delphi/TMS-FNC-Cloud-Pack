@@ -207,6 +207,11 @@ object CloudStorageServicesMain: TCloudStorageServicesMain
       Height = 26
       Visible = True
       PersistTokens.Section = 'TTMSFNCCloudGoogleDrive'
+      PersistTokens.SaveClientID = True
+      PersistTokens.SaveSecret = True
+      PersistTokens.SaveKey = True
+      PersistTokens.SaveCallBack = True
+      Service = cssBox
       OnConnected = TMSFNCCloudStorageServices1Connected
       OnGetFolderList = TMSFNCCloudStorageServices1GetFolderList
       OnCreateFolder = TMSFNCCloudStorageServices1CreateFolder

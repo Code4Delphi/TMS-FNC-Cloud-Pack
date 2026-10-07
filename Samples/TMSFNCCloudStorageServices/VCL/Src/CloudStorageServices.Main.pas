@@ -109,7 +109,7 @@ procedure TCloudStorageServicesMain.SelectService;
 var
   LPersistTokens: string;
 begin
-  LPersistTokens := TTMSFNCUtils.AddBackslash(TTMSFNCUtils.GetDocumentsPath) + TMSFNCCloudStorageServices1.ClassName;
+  LPersistTokens := TTMSFNCUtils.AddBackslash(TTMSFNCUtils.GetAppPath) + TMSFNCCloudStorageServices1.ClassName;
 
   TMSFNCCloudStorageServices1.Authentication.ClientID := FClientID;
   TMSFNCCloudStorageServices1.Authentication.Secret := FSecret;

@@ -183,21 +183,13 @@ object CloudStorageServicesMain: TCloudStorageServicesMain
       TabOrder = 2
     end
     object cbStorageService: TComboBox
-      Left = 80
-      Top = 13
+      Left = 79
+      Top = 15
       Width = 278
       Height = 21
       Style = csDropDownList
-      ItemIndex = 2
       TabOrder = 3
-      Text = 'Google Drive'
       OnChange = cbStorageServiceChange
-      Items.Strings = (
-        'Box'
-        'DropBox'
-        'Google Drive'
-        'OneDrive'
-        'Hubic')
     end
     object btConnect: TButton
       Left = 363
@@ -214,7 +206,7 @@ object CloudStorageServicesMain: TCloudStorageServicesMain
       Width = 26
       Height = 26
       Visible = True
-      Service = cssBox
+      PersistTokens.Section = 'TTMSFNCCloudGoogleDrive'
       OnConnected = TMSFNCCloudStorageServices1Connected
       OnGetFolderList = TMSFNCCloudStorageServices1GetFolderList
       OnCreateFolder = TMSFNCCloudStorageServices1CreateFolder

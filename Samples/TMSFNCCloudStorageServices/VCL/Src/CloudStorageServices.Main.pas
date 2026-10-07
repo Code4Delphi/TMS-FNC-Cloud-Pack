@@ -8,6 +8,7 @@ uses
   System.SysUtils,
   System.Variants,
   System.Classes,
+  System.TypInfo,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -78,13 +79,12 @@ type
     procedure btUploadClick(Sender: TObject);
     procedure btDeleteClick(Sender: TObject);
   private
+    procedure LoadKeysFromFile;
 
   public
-    FClientID: string;
-    FSecret: string;
-    FURL: string;
     FCurrentFolder: TTMSFNCCloudItem;
     procedure Refresh;
+    procedure FillStorageServices;
     procedure SelectService;
     procedure FillListBox(AItems: TTMSFNCCloudItems; AAddFolders, AAddFiles: Boolean);
   end;
@@ -98,56 +98,28 @@ implementation
 
 procedure TCloudStorageServicesMain.FormCreate(Sender: TObject);
 begin
-  FClientID := '';
-  FSecret := '';
-  FURL := '';
-
+  Self.FillStorageServices;
+  Self.LoadKeysFromFile;
   Self.SelectService;
 end;
 
-procedure TCloudStorageServicesMain.SelectService;
-var
-  LPersistTokens: string;
+procedure TCloudStorageServicesMain.FillStorageServices;
 begin
-  LPersistTokens := TTMSFNCUtils.AddBackslash(TTMSFNCUtils.GetAppPath) + TMSFNCCloudStorageServices1.ClassName;
+  cbStorageService.Items.Clear;
+  for var LService := Low(TTMSFNCCloudStorageServicesType) to High(TTMSFNCCloudStorageServicesType) do
+    cbStorageService.Items.Add(GetEnumName(TypeInfo(TTMSFNCCloudStorageServicesType), Ord(LService)).Substring(3));
 
-  TMSFNCCloudStorageServices1.Authentication.ClientID := FClientID;
-  TMSFNCCloudStorageServices1.Authentication.Secret := FSecret;
-  TMSFNCCloudStorageServices1.Authentication.CallBackURL := FURL;
+  cbStorageService.ItemIndex := Ord(cssGoogleDrive);
+end;
 
-  case cbStorageService.ItemIndex of
-    0:
-    begin
-      TMSFNCCloudStorageServices1.Service := cssBox;
-      TMSFNCCloudStorageServices1.PersistTokens.Key := LPersistTokens + 'Box.ini';
-    end;
-    1:
-    begin;
-      TMSFNCCloudStorageServices1.Service := cssDropBox;
-      TMSFNCCloudStorageServices1.PersistTokens.Key := LPersistTokens + 'DropBox.ini';
-    end;
-    2:
-    begin
-      TMSFNCCloudStorageServices1.Service := cssGoogleDrive;
-      TMSFNCCloudStorageServices1.PersistTokens.Key := LPersistTokens + 'GoogleDrive.ini';
-    end;
-    3:
-    begin
-      TMSFNCCloudStorageServices1.Service := cssMicrosoftOneDrive;
-      TMSFNCCloudStorageServices1.PersistTokens.Key := LPersistTokens + 'OneDrive.ini';
-    end;
-    4:
-    begin
-      TMSFNCCloudStorageServices1.Service := cssHubic;
-      TMSFNCCloudStorageServices1.PersistTokens.Key := LPersistTokens + 'Hubic.ini';
-    end;
-  end;
+procedure TCloudStorageServicesMain.LoadKeysFromFile;
+begin
+  var LPersistTokens := TTMSFNCUtils.AddBackslash(TTMSFNCUtils.GetAppPath) + TMSFNCCloudStorageServices1.ClassName + '.ini';
+  TMSFNCCloudStorageServices1.PersistTokens.Key := LPersistTokens;
 
   edClientID.Text := TMSFNCCloudStorageServices1.Authentication.ClientID;
   edSecret.Text := TMSFNCCloudStorageServices1.Authentication.Secret;
   edCallbackURL.Text := TMSFNCCloudStorageServices1.Authentication.CallBackURL;
-
-  TMSFNCCloudStorageServices1.Storage.LoadTokens;
 end;
 
 procedure TCloudStorageServicesMain.btConnectClick(Sender: TObject);
@@ -155,12 +127,21 @@ begin
   if (edClientID.Text = '') or (edSecret.Text = '') and (edCallbackURL.Text = '') then
     raise Exception.Create('Please fill in ClientID, Secret and CallbackURL');
 
-  FClientID := edClientID.Text;
-  FSecret := edSecret.Text;
-  FURL := edCallbackURL.Text;
-
   Self.SelectService;
   TMSFNCCloudStorageServices1.Connect;
+end;
+
+procedure TCloudStorageServicesMain.SelectService;
+begin
+  if cbStorageService.ItemIndex < 0 then
+    Exit;
+
+  TMSFNCCloudStorageServices1.Service := TTMSFNCCloudStorageServicesType(cbStorageService.ItemIndex);
+  TMSFNCCloudStorageServices1.Authentication.ClientID := edClientID.Text;
+  TMSFNCCloudStorageServices1.Authentication.Secret := edSecret.Text;
+  TMSFNCCloudStorageServices1.Authentication.CallBackURL := edCallbackURL.Text;
+
+  TMSFNCCloudStorageServices1.Storage.LoadTokens;
 end;
 
 procedure TCloudStorageServicesMain.btCreateFolderClick(Sender: TObject);
@@ -280,7 +261,8 @@ end;
 
 procedure TCloudStorageServicesMain.cbStorageServiceChange(Sender: TObject);
 begin
-  Self.SelectService;
+  //Self.SelectService;
+  Self.LoadKeysFromFile;
 end;
 
 procedure TCloudStorageServicesMain.Refresh;

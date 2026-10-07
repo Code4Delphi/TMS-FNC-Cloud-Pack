@@ -21,7 +21,7 @@ Entre os componentes estão:
 |--|--|
 
 ## Vídeos de demonstração
-- Em breve
+- [Delphi + Google Drive: Gerencie Arquivos na Nuvem com Facilidade](https://youtu.be/kJxuo6BF0R8)
 
 <br>
 

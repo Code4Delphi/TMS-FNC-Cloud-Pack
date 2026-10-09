@@ -26,7 +26,8 @@ Entre os componentes estão:
 - [Microsoft OneDrive (Registros de aplicativos no Azure)](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade)
 
 ## Vídeos de demonstração
-- [Delphi + Google Drive: Gerencie Arquivos na Nuvem com Facilidade](https://youtu.be/kJxuo6BF0R8)
+- [Delphi + Google Drive: Gerando Credenciais e Gerenciando Arquivos na Nuvem](https://youtu.be/kJxuo6BF0R8)
+- [Delphi + Dropbox: Gerando Credenciais e Gerenciando Arquivos na Nuvem](https://youtu.be/kJxuo6BF0R8)
 
 <br>
 

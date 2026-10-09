@@ -21,12 +21,12 @@ Entre os componentes estão:
 |--|--|
 
 ## Links para criar credentiais
-- [Google Drive API](https://www.youtube.com/watch?v=kJxuo6BF0R8&list=PLVecY1MhHFXI)
+- [Google Drive API](https://console.cloud.google.com/)
 - [Drop box](https://www.dropbox.com/developers/apps)
 - [Microsoft OneDrive (Registros de aplicativos no Azure)](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade)
 
 ## Vídeos de demonstração
-- [Delphi + Google Drive: Gerando Credenciais e Gerenciando Arquivos na Nuvem](https://youtu.be/kJxuo6BF0R8)
+- [Delphi + Google Drive: Gerando Credenciais e Gerenciando Arquivos na Nuvem](https://www.youtube.com/watch?v=kJxuo6BF0R8&list=PLVecY1MhHFXI)
 - [Delphi + Dropbox: Gerando Credenciais e Gerenciando Arquivos na Nuvem](https://www.youtube.com/watch?v=S_HALzVcQ3k&list=PLVecY1MhHFXI)
 
 <br>

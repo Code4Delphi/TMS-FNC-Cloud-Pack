@@ -20,6 +20,11 @@ Entre os componentes estão:
 |[Site oficial](https://www.tmssoftware.com/site/tmsfnccloudpack.asp)|[Documentação](https://doc.tmssoftware.com/fnc/cloudpack/)|
 |--|--|
 
+## Links para criar credentiais
+- [Google Drive API](https://console.cloud.google.com/)
+- [Drop box](https://www.dropbox.com/developers/apps)
+- [Microsoft OneDrive (Registros de aplicativos no Azure)](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade)
+
 ## Vídeos de demonstração
 - [Delphi + Google Drive: Gerencie Arquivos na Nuvem com Facilidade](https://youtu.be/kJxuo6BF0R8)
 

@@ -29,6 +29,7 @@ Entre os componentes estão:
 - [Playlist completa](https://www.youtube.com/playlist?list=PLVecY1MhHFXI)
 - [Delphi + Google Drive: Gerando Credenciais e Gerenciando Arquivos na Nuvem](https://www.youtube.com/watch?v=kJxuo6BF0R8&list=PLVecY1MhHFXI)
 - [Delphi + Dropbox: Gerando Credenciais e Gerenciando Arquivos na Nuvem](https://www.youtube.com/watch?v=S_HALzVcQ3k&list=PLVecY1MhHFXI)
+- [Delphi + OneDrive: Gerando Credenciais e Gerenciando Arquivos na Nuvem](https://www.youtube.com/watch?v=aQXv1qlQkJE&list=PLVecY1MhHFXI)
 
 <br>
 
